@@ -8,12 +8,20 @@
     "prettier.requireConfig": true,
     "prettier.useEditorConfig": true,
     "prettier.configPath": ".prettierrc",
-    "eslint.validate": [
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact"
-    ],
+    "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
     "editor.formatOnType": true,
-    "editor.autoIndent": "full"
+    "editor.autoIndent": "full",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.autoClosingBrackets": "always",
+    "editor.autoClosingQuotes": "always",
+    "editor.autoSurround": "languageDefined",
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.quickSuggestions": {
+        "strings": true
+    },
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
+    "editor.language.brackets": [["'", "'"]],
+    "editor.language.colorizedBracketPairs": [["'", "'"]]
 }
