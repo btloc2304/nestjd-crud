@@ -9,7 +9,7 @@ export class AuthService {
         private readonly prismaService: PrismaService,
     ) {}
 
-    async register(body: RegisterBodyDto) {
+    async register(body: RegisterBodyDto): Promise<any> {
         try {
             const hashedPassword = await this.hashService.hash(body.password);
             const user = await this.prismaService.user.create({
