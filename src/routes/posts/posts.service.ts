@@ -9,20 +9,14 @@ export class PostsService {
         return this.prismaService.post.findMany();
     }
 
-    async createPost(post: {
-        title: string;
-        content: string;
-        authorId: number;
-    }) {
+    async createPost(post: { title: string; content: string; authorId: number }) {
         // Check if user exists before creating post
         const userExists = await this.prismaService.user.findUnique({
             where: { id: post.authorId },
         });
 
         if (!userExists) {
-            throw new BadRequestException(
-                `User with id ${post.authorId} does not exist`,
-            );
+            throw new BadRequestException(`User with id ${post.authorId} does not exist`);
         }
 
         return this.prismaService.post.create({
@@ -40,19 +34,14 @@ export class PostsService {
         });
     }
 
-    async updatePost(
-        id: string,
-        post: { title: string; content: string; authorId: number },
-    ) {
+    async updatePost(id: string, post: { title: string; content: string; authorId: number }) {
         // Check if user exists before updating post
         const userExists = await this.prismaService.user.findUnique({
             where: { id: post.authorId },
         });
 
         if (!userExists) {
-            throw new BadRequestException(
-                `User with id ${post.authorId} does not exist`,
-            );
+            throw new BadRequestException(`User with id ${post.authorId} does not exist`);
         }
 
         return this.prismaService.post.update({
@@ -78,9 +67,7 @@ export class PostsService {
             })
             .then(user => {
                 if (!user) {
-                    throw new BadRequestException(
-                        `User with id ${userId} does not exist`,
-                    );
+                    throw new BadRequestException(`User with id ${userId} does not exist`);
                 }
             });
     }

@@ -1,12 +1,14 @@
 {
-  "singleQuote": true,
-  "trailingComma": "all",
-  "printWidth": 80,
-  "semi": true,
-  "bracketSpacing": true,
-  "arrowParens": "avoid",
-  "tabWidth": 4,
-  "importOrder": ["^@nestjs/(.*)$", "^[./]"],
-  "importOrderSeparation": true,
-  "importOrderParserPlugins": ["typescript", "decorators-legacy"]
+    "singleQuote": true,
+    "trailingComma": "all",
+    "printWidth": 100,
+    "semi": true,
+    "bracketSpacing": true,
+    "arrowParens": "avoid",
+    "tabWidth": 4,
+    "useTabs": false,
+    "endOfLine": "lf",
+    "importOrder": ["^@nestjs/(.*)$", "^[./]"],
+    "importOrderSeparation": true,
+    "importOrderParserPlugins": ["typescript", "decorators-legacy"]
 }
