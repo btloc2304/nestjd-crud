@@ -2,6 +2,8 @@
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { LoggingInterceptor } from './shared/interceptors/logging.interceptor';
+import { TransformInterceptor } from './shared/interceptors/transform.interceptor';
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -26,6 +28,8 @@ async function bootstrap() {
             },
         }),
     );
+    app.useGlobalInterceptors(new LoggingInterceptor()); // Sử dụng LoggingInterceptor toàn cục
+    app.useGlobalInterceptors(new TransformInterceptor()); // Sử dụng TransformInterceptor toàn cục
     await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

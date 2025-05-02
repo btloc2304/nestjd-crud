@@ -1,5 +1,6 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Type } from 'class-transformer';
 import { IsString } from 'class-validator';
+import { SussessResDTO } from '../../shared/shared.dto';
 
 export class LoginBodyDto {
     @IsString()
@@ -17,7 +18,7 @@ export class RegisterBodyDto extends LoginBodyDto {
     confirmPassword: string;
 }
 
-export class RegisterResponseDto {
+export class RegisterResponseEntityDto {
     id: string;
     name: string;
     email: string;
@@ -32,7 +33,15 @@ export class RegisterResponseDto {
         return `${this.id} - ${this.name}`;
     }
 
-    constructor(partial: Partial<RegisterResponseDto>) {
+    constructor(partial: Partial<RegisterResponseEntityDto>) {
         Object.assign(this, partial);
+    }
+}
+
+export class RegisterResponseDto extends SussessResDTO<RegisterResponseEntityDto> {
+    @Type(() => RegisterResponseEntityDto)
+    declare data: RegisterResponseEntityDto;
+    constructor(data: RegisterResponseEntityDto) {
+        super(data);
     }
 }

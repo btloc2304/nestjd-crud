@@ -23,5 +23,6 @@
     "javascript.preferences.quoteStyle": "single",
     "typescript.preferences.quoteStyle": "single",
     "editor.language.brackets": [["'", "'"]],
-    "editor.language.colorizedBracketPairs": [["'", "'"]]
+    "editor.language.colorizedBracketPairs": [["'", "'"]],
+    "files.eol": "\n"
 }
