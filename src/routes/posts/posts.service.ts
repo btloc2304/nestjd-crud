@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { PrismaService } from '../../shared/services/prisma/prisma.service';
+import { PrismaService } from '../../shared/services/prisma.service';
 
 @Injectable()
 export class PostsService {
@@ -69,5 +69,19 @@ export class PostsService {
         return this.prismaService.post.delete({
             where: { id: Number(id) },
         });
+    }
+
+    async ensureUserExists(userId: number) {
+        return this.prismaService.user
+            .findUnique({
+                where: { id: userId },
+            })
+            .then(user => {
+                if (!user) {
+                    throw new BadRequestException(
+                        `User with id ${userId} does not exist`,
+                    );
+                }
+            });
     }
 }

@@ -1,5 +1,4 @@
 import {
-    BadRequestException,
     Body,
     Controller,
     Delete,
@@ -8,15 +7,11 @@ import {
     Post,
     Put,
 } from '@nestjs/common';
-import { PrismaService } from '../../shared/services/prisma/prisma.service';
 import { PostsService } from './posts.service';
 
 @Controller('posts')
 export class PostsController {
-    constructor(
-        private readonly postsService: PostsService,
-        private readonly prismaService: PrismaService,
-    ) {}
+    constructor(private readonly postsService: PostsService) {}
     @Get()
     getPosts() {
         return this.postsService.getPosts();
@@ -31,18 +26,8 @@ export class PostsController {
             authorId: number;
         },
     ) {
-        // Check if user exists before creating post
-        const userExists = await this.prismaService.user.findUnique({
-            where: { id: body.authorId },
-        });
-
-        if (!userExists) {
-            throw new BadRequestException(
-                `User with id ${body.authorId} does not exist`,
-            );
-        }
-
-        // Use the service method instead of direct prisma call
+        // Delegate user existence check to the service
+        await this.postsService.ensureUserExists(body.authorId);
         return this.postsService.createPost(body);
     }
 
