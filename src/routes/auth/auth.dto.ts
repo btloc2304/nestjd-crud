@@ -45,3 +45,12 @@ export class RegisterResponseDto extends SussessResDTO<RegisterResponseEntityDto
         super(data);
     }
 }
+
+export class LoginResponseDto {
+    accessToken: string;
+    refreshToken: string;
+
+    constructor(data: LoginResponseDto) {
+        Object.assign(this, data);
+    }
+}
