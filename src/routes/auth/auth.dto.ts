@@ -54,3 +54,10 @@ export class LoginResponseDto {
         Object.assign(this, data);
     }
 }
+
+export class RefreshTokenBodyDto {
+    @IsString()
+    refreshToken: string;
+}
+
+export class RefreshTokenResponseDto extends LoginResponseDto {}

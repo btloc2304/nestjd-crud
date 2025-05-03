@@ -1,5 +1,12 @@
 import { Body, Controller, Post, SerializeOptions } from '@nestjs/common';
-import { LoginBodyDto, LoginResponseDto, RegisterBodyDto, RegisterResponseDto } from './auth.dto';
+import {
+    LoginBodyDto,
+    LoginResponseDto,
+    RefreshTokenBodyDto,
+    RefreshTokenResponseDto,
+    RegisterBodyDto,
+    RegisterResponseDto,
+} from './auth.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -20,5 +27,10 @@ export class AuthController {
     async login(@Body() body: LoginBodyDto) {
         console.log('Login body:', body);
         return new LoginResponseDto(await this.authService.login(body));
+    }
+
+    @Post('refresh-token')
+    async refreshToken(@Body() body: RefreshTokenBodyDto) {
+        return new RefreshTokenResponseDto(await this.authService.refreshToken(body.refreshToken));
     }
 }

@@ -1,4 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { HashingService } from '../../shared/services/hashing.service';
 import { PrismaService } from '../../shared/services/prisma.service';
 import { TokenService } from '../../shared/services/token.service';
@@ -81,5 +82,41 @@ export class AuthService {
             accessToken,
             refreshToken,
         };
+    }
+
+    async refreshToken(refreshToken: string): Promise<any> {
+        try {
+            // Kiểm tra xem refresh token có hợp lệ không
+            const { userId } = await this.tokenService.verifyRefreshToken(refreshToken);
+            // Kiểm tra xem refresh token có tồn tại trong cơ sở dữ liệu không
+            await this.prismaService.refreshToken.findUnique({
+                where: { token: refreshToken },
+            });
+            // Xóa refresh token cũ
+            await this.prismaService.refreshToken.delete({
+                where: { token: refreshToken },
+            });
+            // Tạo mới access token và refresh token
+            return this.generateTokens({ userId: userId });
+        } catch (error) {
+            // Nếu refresh token không còn tồn tại trong cơ sở dữ
+            // Thông báo lỗi
+            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+                // Token không tồn tại trong cơ sở dữ liệu
+                throw new UnauthorizedException([
+                    {
+                        field: 'refreshToken',
+                        message: 'Refresh token not found',
+                    },
+                ]);
+            }
+
+            throw new UnauthorizedException([
+                {
+                    field: 'refreshToken',
+                    message: 'Refresh token invalid',
+                },
+            ]);
+        }
     }
 }
