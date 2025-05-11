@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { isNotFoundError, isUniqueConstraintError } from '../../shared/helpers';
 import { HashingService } from '../../shared/services/hashing.service';
 import { PrismaService } from '../../shared/services/prisma.service';
 import { TokenService } from '../../shared/services/token.service';
@@ -24,6 +24,14 @@ export class AuthService {
             });
             return user;
         } catch (error) {
+            if (isUniqueConstraintError(error)) {
+                throw new UnauthorizedException([
+                    {
+                        field: 'email',
+                        message: 'Email already exists',
+                    },
+                ]);
+            }
             console.error('Error creating user:', error);
         }
     }
@@ -101,7 +109,7 @@ export class AuthService {
         } catch (error) {
             // Nếu refresh token không còn tồn tại trong cơ sở dữ
             // Thông báo lỗi
-            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+            if (isNotFoundError(error)) {
                 // Token không tồn tại trong cơ sở dữ liệu
                 throw new UnauthorizedException([
                     {

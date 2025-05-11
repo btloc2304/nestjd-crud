@@ -1,9 +1,10 @@
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './routes/auth/auth.module';
 import { PostsModule } from './routes/posts/posts.module';
+import { AuthenticationGuard } from './shared/guards/authentication.guard';
 import { SharedModule } from './shared/shared.module';
 
 @Module({
@@ -12,8 +13,12 @@ import { SharedModule } from './shared/shared.module';
     providers: [
         AppService,
         {
-            provide: APP_INTERCEPTOR, // Đăng ký ClassSerializerInterceptor toàn cục
-            useClass: ClassSerializerInterceptor, // Sử dụng ClassSerializerInterceptor
+            provide: APP_INTERCEPTOR,
+            useClass: ClassSerializerInterceptor,
+        },
+        {
+            provide: APP_GUARD,
+            useClass: AuthenticationGuard,
         },
     ],
 })
