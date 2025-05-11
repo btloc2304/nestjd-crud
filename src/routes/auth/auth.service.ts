@@ -127,4 +127,38 @@ export class AuthService {
             ]);
         }
     }
+
+    async logout(refreshToken: string): Promise<any> {
+        try {
+            // Kiểm tra xem refresh token có hợp lệ không
+            await this.tokenService.verifyRefreshToken(refreshToken);
+            // Xóa refresh token cũ
+            await this.prismaService.refreshToken.delete({
+                where: { token: refreshToken },
+            });
+            // Trả về thông báo thành công
+            return {
+                message: 'Logout successful',
+            };
+        } catch (error) {
+            // Nếu refresh token không còn tồn tại trong cơ sở dữ
+            // Thông báo lỗi
+            if (isNotFoundError(error)) {
+                // Token không tồn tại trong cơ sở dữ liệu
+                throw new UnauthorizedException([
+                    {
+                        field: 'refreshToken',
+                        message: 'Refresh token not found',
+                    },
+                ]);
+            }
+
+            throw new UnauthorizedException([
+                {
+                    field: 'refreshToken',
+                    message: 'Refresh token invalid',
+                },
+            ]);
+        }
+    }
 }

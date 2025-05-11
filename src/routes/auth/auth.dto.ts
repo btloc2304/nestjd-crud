@@ -68,3 +68,7 @@ export class RefreshTokenBodyDto {
 }
 
 export class RefreshTokenResponseDto extends LoginResponseDto {}
+
+export class LogoutBodyDto extends RefreshTokenBodyDto {}
+
+export class LogoutResponseDto extends RefreshTokenResponseDto {}

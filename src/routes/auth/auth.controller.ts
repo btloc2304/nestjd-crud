@@ -34,4 +34,9 @@ export class AuthController {
     async refreshToken(@Body() body: RefreshTokenBodyDto) {
         return new RefreshTokenResponseDto(await this.authService.refreshToken(body.refreshToken));
     }
+
+    @Post('logout')
+    async logout(@Body() body: RefreshTokenBodyDto) {
+        return new RefreshTokenResponseDto(await this.authService.logout(body.refreshToken));
+    }
 }

@@ -7,7 +7,7 @@ import { PostsService } from './posts.service';
 export class PostsController {
     constructor(private readonly postsService: PostsService) {}
 
-    @Auth([AuthType.Bearer, AuthType.APIKey], { condition: ConditionGuard.And })
+    @Auth([AuthType.Bearer], { condition: ConditionGuard.Or })
     @Get()
     getPosts() {
         return this.postsService.getPosts();
