@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-floating-promises */
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -26,7 +25,7 @@ async function bootstrap() {
                 });
                 return new BadRequestException(messages); // Ném ngoại lệ với thông báo lỗi
             },
-        }),
+        })
     );
     app.useGlobalInterceptors(new LoggingInterceptor()); // Sử dụng LoggingInterceptor toàn cục
     app.useGlobalInterceptors(new TransformInterceptor()); // Sử dụng TransformInterceptor toàn cục

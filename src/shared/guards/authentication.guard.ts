@@ -12,7 +12,7 @@ export class AuthenticationGuard implements CanActivate {
     constructor(
         private readonly reflector: Reflector,
         private readonly accessTokenGuard: AccessTokenGuard,
-        private readonly apiKeyGuard: APIKeyGuard,
+        private readonly apiKeyGuard: APIKeyGuard
     ) {
         this.authTypeGuardMap = {
             [AuthType.Bearer]: this.accessTokenGuard,
@@ -40,7 +40,7 @@ export class AuthenticationGuard implements CanActivate {
                     err => {
                         error = err;
                         return false;
-                    },
+                    }
                 );
                 if (canActivate) {
                     return true;
@@ -53,7 +53,7 @@ export class AuthenticationGuard implements CanActivate {
                     err => {
                         error = err;
                         return false;
-                    },
+                    }
                 );
                 if (!canActivate) {
                     throw new UnauthorizedException();

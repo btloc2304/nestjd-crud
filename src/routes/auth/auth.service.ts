@@ -9,7 +9,7 @@ export class AuthService {
     constructor(
         private readonly hashService: HashingService,
         private readonly prismaService: PrismaService,
-        private readonly tokenService: TokenService,
+        private readonly tokenService: TokenService
     ) {}
 
     async register(body: RegisterBodyDto): Promise<any> {

@@ -20,7 +20,7 @@ export class PostsController {
             title: string;
             content: string;
             authorId: number;
-        },
+        }
     ) {
         // Delegate user existence check to the service
         await this.postsService.ensureUserExists(body.authorId);

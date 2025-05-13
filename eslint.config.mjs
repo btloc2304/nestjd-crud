@@ -1,60 +1,53 @@
-// @ts-check
-import eslint from '@eslint/js';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import prettierConfig from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default [
     {
-        ignores: ['eslint.config.mjs'],
-    },
-    eslint.configs.recommended,
-    ...tseslint.configs.recommendedTypeChecked,
-    eslintPluginPrettierRecommended,
-    {
-        rules: {
-            // Đặt rõ cấu hình Prettier trong ESLint để đảm bảo đồng bộ
-            'prettier/prettier': [
-                'error',
-                {
-                    tabWidth: 4,
-                    singleQuote: true,
-                    trailingComma: 'all',
-                    printWidth: 100,
-                    semi: true,
-                    bracketSpacing: true,
-                    arrowParens: 'avoid',
-                    useTabs: false,
-                    endOfLine: 'lf',
-                },
-                { usePrettierrc: true },
-            ],
-        },
+        files: ['src/**/*.{ts,tsx}'],
+        ignores: ['dist/**', 'coverage/**', 'node_modules/**'],
         languageOptions: {
+            parser: tsParser,
+            parserOptions: {
+                project: './tsconfig.json',
+                sourceType: 'module',
+            },
             globals: {
                 ...globals.node,
                 ...globals.jest,
             },
-            sourceType: 'commonjs',
-            parserOptions: {
-                projectService: true,
-                tsconfigRootDir: import.meta.dirname,
-            },
+        },
+        plugins: {
+            '@typescript-eslint': tsPlugin,
+            prettier: prettierPlugin,
+        },
+        rules: {
+            ...prettierConfig.rules,
+            'prettier/prettier': [
+                'error',
+                {
+                    tabWidth: 4,
+                    useTabs: false,
+                    semi: true,
+                    singleQuote: true,
+                    quoteProps: 'as-needed',
+                    trailingComma: 'es5',
+                    bracketSpacing: true,
+                    arrowParens: 'avoid',
+                    printWidth: 100,
+                    endOfLine: 'lf',
+                },
+            ],
+            indent: ['off'],
+            'no-tabs': 'error',
         },
     },
     {
+        files: ['test/**/*.{ts,tsx}'],
         rules: {
             '@typescript-eslint/no-explicit-any': 'off',
-            '@typescript-eslint/no-floating-promises': 'warn',
-            '@typescript-eslint/no-unsafe-argument': 'off',
-            '@typescript-eslint/no-unsafe-return': 'off',
-            '@typescript-eslint/no-unsafe-assignment': 'off',
-            '@typescript-eslint/only-throw-error': 'off',
-            '@typescript-eslint/no-unsafe-call': 'off',
-            '@typescript-eslint/no-unsafe-member-access': 'off',
-            // Tắt các quy tắc định dạng ESLint có thể xung đột
-            indent: 'off',
-            '@typescript-eslint/indent': 'off',
         },
     },
-);
+];

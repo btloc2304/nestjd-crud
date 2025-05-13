@@ -1,0 +1,16 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.detectIndentation": false,
+  "editor.tabSize": 4,
+  "typescript.format.enable": false,
+  "eslint.validate": ["javascript", "typescript"],
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+  }
+}
