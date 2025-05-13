@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { AuthType, ConditionGuard } from '../../shared/constants/auth.constant';
+import { ActiveUser } from '../../shared/decorators/active-user.decorator';
 import { Auth } from '../../shared/decorators/auth.decorator';
 import { PostsService } from './posts.service';
 
@@ -14,17 +15,19 @@ export class PostsController {
     }
 
     @Post()
+    @Auth([AuthType.Bearer])
     async createPost(
         @Body()
         body: {
             title: string;
             content: string;
-            authorId: number;
-        }
+        },
+        @ActiveUser('userId') userId: number
     ) {
+        console.log('User ID:', userId);
         // Delegate user existence check to the service
-        await this.postsService.ensureUserExists(body.authorId);
-        return this.postsService.createPost(body);
+        await this.postsService.ensureUserExists(userId);
+        return this.postsService.createPost({ ...body, authorId: userId });
     }
 
     @Get(':id')
